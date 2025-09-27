@@ -19,10 +19,10 @@ if(POLICY CMP0077)
     cmake_policy(SET CMP0077 NEW)
 endif()
 
-set(DEFAULT_TSV_FILE "${CMAKE_SOURCE_DIR}/data/ip_filter.tsv" CACHE FILEPATH "Path to default TSV file")
+set(DEFAULT_TSV_FILE "./ip_filter.tsv" CACHE FILEPATH "Path to default TSV file")
 set(INPUT_DIR "${CMAKE_SOURCE_DIR}/data/input" CACHE PATH "Directory for input files") 
 set(OUTPUT_DIR "${CMAKE_SOURCE_DIR}/data/output" CACHE PATH "Directory for output files")
-set(FILE_PATH "${CMAKE_SOURCE_DIR}/data/ip_filter.tsv")
+set(FILE_PATH "./ip_filter.tsv")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

@@ -39,6 +39,7 @@ jobs:
       - name: List files
         run: |
           ls -la *.tar.gz || echo "No .tar.gz files found"
+          ls -la *.tsv || echo "No .tsv files found"
 
       - name: Upload Arch Linux artifacts
         uses: actions/upload-artifact@v4
@@ -46,6 +47,7 @@ jobs:
           name: arch-packages
           path: |
             *.tar.gz
+            *.tsv
 
   Release-arch:
     runs-on: ubuntu-latest
