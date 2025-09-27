@@ -11,6 +11,8 @@
 void print(std::vector<std::vector<std::string> > pool);
 
 int main(int argc, char const *argv[]) {
+    (void)argc;
+    (void)argv;
     try {
         std::string filename = FILE_PATH;
         auto ip_pool = read_file_lines(filename);
