@@ -60,7 +60,7 @@ add_executable(ip_sort_filt
 if(MSVC)
     target_compile_options(ip_sort_filt PRIVATE /W4 /WX)
 else()
-с    target_compile_options(ip_sort_filt PRIVATE -Wall -Wextra -pedantic -Werror)
+    target_compile_options(ip_sort_filt PRIVATE -Wall -Wextra -pedantic -Werror)
 endif()
 
 target_include_directories(ip_sort_filt PRIVATE ${INCLUDE_DIR})
