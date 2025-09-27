@@ -9,7 +9,7 @@ void revers_sort(std::vector< std::vector<std::string> >& list) {
   std::sort(list.begin(), list.end(), 
                         [](std::vector<std::string>& elem, const std::vector<std::string>& next_elem) {
                           for (int posit = 0; posit < 4; posit++) {
-                            if (std::stoi(elem[posit]) != std::stoi(next_elem[posit])) return std::stoi(elem[posit]) > std::stoi(next_elem[posit]);
+                            if (elem[posit] != next_elem[posit]) return elem[posit] > next_elem[posit];
                           }
                             return false;
                         }
@@ -30,7 +30,7 @@ std::vector< std::vector<std::string> > filter_of_ref(std::vector< std::vector<s
             if (ref_list[pos] == "*") {
                 continue;
             }
-            if (std::stoi(elem[pos]) != std::stoi(ref_list[pos])) {
+            if (elem[pos] != ref_list[pos]) {
                 return false;
             }
         }
@@ -56,7 +56,7 @@ std::vector< std::vector<std::string> > filter_of_ref_spec (std::vector< std::ve
     bool matches = [&list, posit, &reference]() { 
         auto& elem = list[posit];
         for (int pos = 0; pos < 4; pos++) {
-            if (std::stoi(elem[pos]) == std::stoi(reference)) {
+            if (elem[pos] == reference) {
                 return true;
             }
         }
