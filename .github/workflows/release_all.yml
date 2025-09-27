@@ -89,6 +89,7 @@ jobs:
           name: windows-packages
           path: |
             build/*.exe
+            build/**/*.exe
 
 
   Release:
