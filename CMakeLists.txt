@@ -61,9 +61,9 @@ target_compile_options(ip_sort_filt PRIVATE -Wall -Wextra)
 target_include_directories(ip_sort_filt PRIVATE ${INCLUDE_DIR})
 
 
-find_package(Boost 1.65.0 REQUIRED COMPONENTS unit_test_framework)
+#find_package(Boost 1.65.0 REQUIRED COMPONENTS unit_test_framework)
 
-if(Boost_FOUND)
+#if(Boost_FOUND)
     add_executable(ip_sort_filt_tests
       ${TEST_DIR}/test_main.cpp  
       ${SRC_DIR}/parse.cpp
@@ -83,7 +83,7 @@ if(Boost_FOUND)
     target_compile_definitions(ip_sort_filt_tests PRIVATE BOOST_TEST_DYN_LINK)
     
     add_test(NAME ip_sort_filt_tests COMMAND ip_sort_filt_tests)
-endif()
+#endif()
 
 if(WIN32)
     set(CPACK_GENERATOR "ZIP")
