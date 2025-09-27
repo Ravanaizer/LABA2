@@ -33,6 +33,8 @@ jobs:
 
       - name: Create package
         run: |
+          cd build
+          make -j4
           cpack -G TGZ -C Release
 
       - name: List files

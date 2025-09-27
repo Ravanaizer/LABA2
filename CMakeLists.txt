@@ -89,9 +89,11 @@ endif()
 
 set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
 set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
-set(CPACK_PACKAGE_VENDOR "Ravana")
+set(CPACK_PACKAGE_VENDOR "Ravanaizer")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "IP sorting and filtering utility")
 set(CPACK_PACKAGE_CONTACT "wasja1117@gmail.com")
+
+install(TARGETS ip_sort_filt RUNTIME DESTINATION bin)
 
 if(WIN32)
     set(CPACK_GENERATOR "ZIP")
@@ -100,3 +102,5 @@ elseif(UNIX)
     set(CPACK_GENERATOR "DEB;TGZ")
     set(CPACK_PACKAGE_FILE_NAME "filt-${PROJECT_VERSION}-linux")
 endif()
+
+include(CPack)
