@@ -1,0 +1,12 @@
+#ifndef @PROJECT_NAME@_FILEPATH_H
+#define @PROJECT_NAME@_FILEPATH_H
+
+#cmakedefine FILE_PATH "@FILE_PATH@"
+
+#ifdef FILE_PATH
+    constexpr const char* IP_DATA_FILE = FILE_PATH;
+#else
+    constexpr const char* IP_DATA_FILE = "default_data.tsv";
+#endif
+
+#endif
