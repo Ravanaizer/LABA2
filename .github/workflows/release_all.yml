@@ -80,8 +80,8 @@ jobs:
       - name: Create standalone package
         run: |
           cd build/Release
-          .\helloworld_cli.exe || echo "Executable might have dependencies"
-          powershell "Compress-Archive -Path *.exe -DestinationPath ../helloworld-0.0.${{ github.run_number }}-win64.zip"
+          .\ip_sort_filt.exe || echo "Executable might have dependencies"
+          powershell "Compress-Archive -Path *.exe -DestinationPath ../ip_sort_filt-0.0.${{ github.run_number }}-win64.zip"
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
