@@ -77,20 +77,18 @@ jobs:
           cd build
           cmake --build . --config Release
 
-      - name: Create standalone package
-        run: |
-          cd build/Release
-          .\ip_sort_filt.exe || echo "Executable might have dependencies"
-          powershell "Compress-Archive -Path *.exe -DestinationPath ../ip_sort_filt-0.0.${{ github.run_number }}-win64.zip"
+      # - name: Create standalone package
+      #   run: |
+      #     cd build/Release
+      #     .\ip_sort_filt.exe || echo "Executable might have dependencies"
+      #     powershell "Compress-Archive -Path *.exe -DestinationPath ../ip_sort_filt-0.0.${{ github.run_number }}-win64.zip"
 
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
         with:
           name: windows-packages
           path: |
-            build/*.zip
             build/*.exe
-            buil/*.tsv
 
 
   Release:
