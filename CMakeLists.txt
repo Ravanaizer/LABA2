@@ -3,6 +3,8 @@ project(ip_sort_filt)
 
 set(PROJECT_NAME "ip_sort_filt")
 
+set(PROJECT_VERSION "1.0.0" CACHE STRING "Project version")
+
 string(REPLACE "." ";" VERSION_LIST ${PROJECT_VERSION})
 list(GET VERSION_LIST 0 PROJECT_VERSION_MAJOR)
 list(GET VERSION_LIST 1 PROJECT_VERSION_MINOR)
