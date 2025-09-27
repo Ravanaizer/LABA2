@@ -29,7 +29,7 @@ jobs:
         run: cmake --build .
 
       - name: Run tests
-        run: cmake --build . --target test
+        run: ./bin/ip_sort_filt_tests
 
       - name: Create package
         run: |
