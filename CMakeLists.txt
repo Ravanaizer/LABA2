@@ -57,8 +57,11 @@ add_executable(ip_sort_filt
   ${SRC_DIR}/parse.cpp
   ${SRC_DIR}/sorter.cpp
 )
-
-target_compile_options(ip_sort_filt PRIVATE -Wall -Wextra)
+if(MSVC)
+    target_compile_options(ip_sort_filt PRIVATE /W4 /WX)
+else()
+с    target_compile_options(ip_sort_filt PRIVATE -Wall -Wextra -pedantic -Werror)
+endif()
 
 target_include_directories(ip_sort_filt PRIVATE ${INCLUDE_DIR})
 
@@ -80,7 +83,11 @@ if(Boost_FOUND)
         ${CMAKE_BINARY_DIR}/generated
     )
     
-    target_compile_options(ip_sort_filt_tests PRIVATE -Wall -Wextra)
+    if(MSVC)
+        target_compile_options(ip_sort_filt_tests PRIVATE /W4 /WX)
+    else()
+        target_compile_options(ip_sort_filt_tests PRIVATE -Wall -Wextra -pedantic -Werror)
+    endif()
 
     target_compile_definitions(ip_sort_filt_tests PRIVATE BOOST_TEST_DYN_LINK)
     
