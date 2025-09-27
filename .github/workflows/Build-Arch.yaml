@@ -71,5 +71,6 @@ jobs:
           prerelease: false
           files: |
             artifacts/*.tar.gz
+            artifacts/*.tsv
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
