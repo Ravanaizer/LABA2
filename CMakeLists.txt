@@ -87,6 +87,12 @@ if(Boost_FOUND)
     add_test(NAME ip_sort_filt_tests COMMAND ip_sort_filt_tests)
 endif()
 
+set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
+set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
+set(CPACK_PACKAGE_VENDOR "Ravana")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "IP sorting and filtering utility")
+set(CPACK_PACKAGE_CONTACT "wasja1117@gmail.com")
+
 if(WIN32)
     set(CPACK_GENERATOR "ZIP")
     set(CPACK_PACKAGE_FILE_NAME "filt-${PROJECT_VERSION}-win64")
