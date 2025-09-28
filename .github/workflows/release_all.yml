@@ -1,0 +1,133 @@
+name: 'C++ Build to Linux and Windows'
+
+on: [push, pull_request]
+
+permissions:
+  contents: write
+
+jobs:
+  Linux-build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
+
+      - name: Configure CMake
+        run: cmake . -DPROJECT_VERSION="0.0.${{ github.run_number }}"
+
+      - name: Build project
+        run: cmake --build .
+
+      - name: Run tests
+        run: ./bin/ip_sort_filt_tests
+
+      - name: Create package
+        run: |
+          cpack -G DEB -C Release
+          cpack -G TGZ -C Release
+
+      - name: List files
+        run: |
+            ls -la *.deb || echo "No .deb files found"
+            ls -la *.tar.gz || echo "No .tar.gz files found"
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-packages
+          path: |
+            *.deb
+            *.tar.gz
+            *.tsv
+
+
+  Win-build:
+    runs-on: windows-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Boost via Chocolatey
+        run: choco install boost-msvc-14.3 -y
+
+      - name: Configure CMake (Release)
+        run: |
+          mkdir build
+          cd build
+          cmake .. `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DPROJECT_VERSION="0.0.${{ github.run_number }}" `
+            -DBUILD_TESTING=OFF  # Test off
+
+      - name: Build Release
+        run: |
+          cd build
+          cmake --build . --config Release
+
+      # - name: Create standalone package
+      #   run: |
+      #     cd build/Release
+      #     .\ip_sort_filt.exe || echo "Executable might have dependencies"
+      #     powershell "Compress-Archive -Path *.exe -DestinationPath ../ip_sort_filt-0.0.${{ github.run_number }}-win64.zip"
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-packages
+          path: |
+            build/*.exe
+            build/**/*.exe
+
+
+  Release:
+    runs-on: ubuntu-latest
+
+    needs: [Linux-build, Win-build]
+
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          pattern: '*'
+          merge-multiple: true
+
+      - name: List downloaded files
+        run: |
+          echo "Downloaded artifacts:"
+          find artifacts -type f -name "*" | head -20
+          echo "Included on artifacts:"
+          ls -la artifacts/
+
+      - name: Create Release and Upload Asset
+        if: success()
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v0.0.${{ github.run_number }}
+          release_name: v0.0.${{ github.run_number }}
+          draft: false
+          prerelease: false
+          files: |
+                artifacts/**/*.deb
+                artifacts/**/*.tar.gz
+                artifacts/**/*.zip
+                artifacts/**/*.tsv
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

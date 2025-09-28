@@ -1,0 +1,76 @@
+name: 'C++ Build on Arch'
+
+on: [push, pull_request]
+
+permissions:
+  contents: write
+
+jobs:
+  Linux-build-arch:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        #with:
+        #    submodules: true
+
+      - name: Update Arch Linux and install dependencies
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm base-devel cmake boost boost-libs git
+
+      - name: Configure CMake
+        run: cmake . -DPROJECT_VERSION="0.0.${{ github.run_number }}"
+
+      - name: Build project
+        run: cmake --build .
+
+      - name: Run tests
+        run: ./bin/ip_sort_filt_tests
+
+      - name: Create package
+        run: |
+          make -j4
+          cpack -G TGZ -C Release
+
+      - name: List files
+        run: |
+          ls -la *.tar.gz || echo "No .tar.gz files found"
+          ls -la *.tsv || echo "No .tsv files found"
+
+      - name: Upload Arch Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: arch-packages
+          path: |
+            *.tar.gz
+            *.tsv
+
+  Release-arch:
+    runs-on: ubuntu-latest
+    needs: Linux-build-arch
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: arch-packages
+          path: artifacts
+
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: Arch-v0.0.${{ github.run_number }}
+          name: Arch Release v0.0.${{ github.run_number }}
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/*.tar.gz
+            artifacts/*.tsv
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
